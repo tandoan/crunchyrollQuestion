@@ -2,11 +2,14 @@
 
 require_once('CrawlerFactory.php');
 require_once('Evaluator.php');
-require_once('DiGraph.php');
+require_once('WeightedDigraph.php');
+require_once('Tarjan.php');
+
+$t = new Tarjan();
 
 $goals = array();
 $deadEnds = array();
-$graph = new DiGraph();
+$graph = new WeightedDiGraph();
 $crawler = CrawlerFactory::createCrawler();
 $initInput = 'abs(add(add(add(add(44181,188),32),142),add(subtract(41,25775),28)))';
 $linksFetched = array();
@@ -23,6 +26,7 @@ function linksToFetch($array){
 $link = Evaluator::evaluate($initInput);
 $startingLink = $link;
 $linksFetched[$link] = false;
+
 
 while($link = linksToFetch($linksFetched)){
     //get a non-fetched link
@@ -52,14 +56,15 @@ while($link = linksToFetch($linksFetched)){
         }
     }
 }
-print_r($graph);
+
+
 
 $answer = array();
 $answer["goal"] = $goalLink;
 $answer["node_count"] = $graph->getNumVertices();
 $answer["shortest_path"] = $graph->getShortestPath($startingLink, $goalLink);
-$answer["directed_cycle_count"] = $graph->getDirectedCycleCount();
-
-echo "links feched is\n";
-print_r(count($linksFetched));
+$answer["directed_cycle_count"] = $t->countCycles($graph);
+//
+//echo "links feched is\n";
+//print_r(count($linksFetched));
 echo json_encode($answer);
