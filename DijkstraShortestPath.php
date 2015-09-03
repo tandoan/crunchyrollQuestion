@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Implementation of Dijkstra's Shortest Path algorithm using priority queues
+ * Class DijkstraShortestPath
+ */
 class DijkstraShortestPath
 {
 
@@ -12,7 +16,12 @@ class DijkstraShortestPath
         $path = array();
         $path[] = $end;
         while ($path[count($path) - 1] != $start) {
-            $path[] = $predecessors[$path[count($path) - 1]]->getFrom();
+            $edge = $predecessors[$path[count($path) - 1]];
+            if($edge){
+                $path[] = $edge->getFrom();
+            } else {
+                return array();
+            }
         }
         $path = array_reverse($path);
         return $path;
@@ -31,6 +40,7 @@ class DijkstraShortestPath
         $predecessors = array(); // array of edges to a vertex
         $pq = new PriorityQueue();
 
+        // initialization
         foreach ($graph->getVertices() as $vertex) {
             $distance[$vertex] = PHP_INT_MAX;
             $predecessors[$vertex] = null;
@@ -40,6 +50,7 @@ class DijkstraShortestPath
         $distance[$start] = 0.0;
         $pq->add($start, 0.0);
 
+        // do it
         while (!$pq->isEmpty()) {
             $v = $pq->extractMin();
             if ($marked[$v]) continue;

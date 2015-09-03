@@ -13,14 +13,14 @@ $myStack->push(2);
 assert(2 == $myStack->size());
 
 
-$p =  $myStack->pop();
+$p = $myStack->pop();
 assert(1 == $myStack->size());
 assert($p == 2);
 
 $myStack->push(3);
 assert(2 == $myStack->size());
 
-$t =  $myStack->top();
+$t = $myStack->top();
 assert(3 == $t);
 $p = $myStack->peak();
 assert(1 == $p);

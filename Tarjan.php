@@ -20,6 +20,7 @@ class Tarjan
     public function countCycles(WeightedDiGraph $digraph)
     {
         $stronglyConnectedComponents = $this->findStronglyConnectComponents($digraph);
+        $visited = array();
         $count = 0;
         foreach ($stronglyConnectedComponents as $scc) {
             if (count($scc) > 1) {
@@ -29,7 +30,11 @@ class Tarjan
                 $edges = $digraph->getEdgesFor($v);
                 foreach ($edges as $edge) {
                     if ($edge->getTo() == $v) {
-                        $count++;
+                        // sometimes a single vertex will show up multiple times?
+                        if(!$visited[$v]){
+                            $count++;
+                            $visited[$v] = true;
+                        }
                         break;
                     }
                 }
