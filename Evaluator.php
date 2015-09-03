@@ -21,7 +21,7 @@ class Evaluator {
      * @return mixed
      */
     private static function doEval($stack){
-        //naieve way to handle
+        //naive way to handle
         $rhs = $stack->pop();
         $lhs = $stack->pop();
         if($lhs === self::ABS){
