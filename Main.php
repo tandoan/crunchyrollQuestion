@@ -1,14 +1,15 @@
 <?php
 $includePath = get_include_path();
 $cwd = getcwd();
-set_include_path($includePath . PATH_SEPARATOR . $cwd.'/interfaces');
+set_include_path($includePath . PATH_SEPARATOR . $cwd . '/interfaces');
 require_once('HTTPFactory.php');
 require_once('Evaluator.php');
 require_once('WeightedDigraph.php');
 require_once('Tarjan.php');
 require_once('DijkstraShortestPath.php');
 
-class Main {
+class Main
+{
     private $tarjan;
     private $dsp;
     private $goalLink;
@@ -21,20 +22,24 @@ class Main {
      * @param $array
      * @return bool
      */
-    function linksToFetch($array){
-        return array_search(false,$array);
+    function linksToFetch($array)
+    {
+        return array_search(false, $array);
     }
 
-    function evalLink($input){
+    function evalLink($input)
+    {
         return Evaluator::evaluate($input);
     }
 
-    function processLinksPage($pageText){
+    function processLinksPage($pageText)
+    {
         $unParsedLinks = explode("\n", $pageText);
         return array_map(array($this, 'evalLink'), $unParsedLinks);
     }
 
-    function init(){
+    function init()
+    {
         $this->tarjan = new Tarjan();
         $this->dsp = new DijkstraShortestPath();
         $this->goalLink = '';
@@ -49,11 +54,12 @@ class Main {
      * Accpets the initial expression, and crawls pages
      * @param $initExpression
      */
-    function crawl($initExpression){
+    function crawl($initExpression)
+    {
         $this->startingLink = $this->evalLink($initExpression);
         $this->linksFetched[$this->startingLink] = false;
 
-        while($link = $this->linksToFetch($this->linksFetched)){
+        while ($link = $this->linksToFetch($this->linksFetched)) {
             //get a non-fetched link
             echo "Link to fetch is $link\n";
 
@@ -62,16 +68,16 @@ class Main {
             $this->linksFetched[$link] = true;
 
             echo "Fetched:\n$pageText\n";
-            if($pageText === 'DEADEND'){
+            if ($pageText === 'DEADEND') {
                 $this->deadEnds[$link] = true;
-            } elseif($pageText === 'GOAL'){
+            } elseif ($pageText === 'GOAL') {
                 $this->goalLink = $link;
             } else {
                 $parsedLinks = $this->processLinksPage($pageText);
-                foreach($parsedLinks as $parsedLink){
-                    if(!isset($this->linksFetched[$parsedLink])){
+                foreach ($parsedLinks as $parsedLink) {
+                    if (!isset($this->linksFetched[$parsedLink])) {
                         $this->linksFetched[$parsedLink] = false;
-                        if(false !== $this->graph->addVertex($parsedLink) ) {
+                        if (false !== $this->graph->addVertex($parsedLink)) {
                             $this->graph->addEdge($link, $parsedLink);
                         }
                     }
@@ -81,7 +87,8 @@ class Main {
     }
 
 
-    public function run($initInput = 'abs(add(add(add(add(44181,188),32),142),add(subtract(41,25775),28)))'){
+    public function run($initInput = 'abs(add(add(add(add(44181,188),32),142),add(subtract(41,25775),28)))')
+    {
         $this->crawl($initInput);
 
         $answer = array();

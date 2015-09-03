@@ -3,15 +3,16 @@
 class DijkstraShortestPath
 {
 
-    public function getShortestPath(WeightedDiGraph $graph, $start,$end){
+    public function getShortestPath(WeightedDiGraph $graph, $start, $end)
+    {
 
-        $ret = $this->calculateDistanceAndPredecessor($graph,$start);
+        $ret = $this->calculateDistanceAndPredecessor($graph, $start);
         $predecessors = $ret['predecessors'];
 
         $path = array();
         $path[] = $end;
-        while($path[count($path)-1] != $start){
-            $path[] = $predecessors[$path[count($path)-1]]->getFrom();
+        while ($path[count($path) - 1] != $start) {
+            $path[] = $predecessors[$path[count($path) - 1]]->getFrom();
         }
         $path = array_reverse($path);
         return $path;
@@ -23,13 +24,14 @@ class DijkstraShortestPath
      * @param $start
      * @return array
      */
-    public function calculateDistanceAndPredecessor(WeightedDiGraph $graph, $start){
+    public function calculateDistanceAndPredecessor(WeightedDiGraph $graph, $start)
+    {
         $distance = array();
         $marked = array();
         $predecessors = array(); // array of edges to a vertex
         $pq = new PriorityQueue();
 
-        foreach($graph->getVertices() as $vertex){
+        foreach ($graph->getVertices() as $vertex) {
             $distance[$vertex] = PHP_INT_MAX;
             $predecessors[$vertex] = null;
             $marked[$vertex] = false;
@@ -38,20 +40,20 @@ class DijkstraShortestPath
         $distance[$start] = 0.0;
         $pq->add($start, 0.0);
 
-        while(!$pq->isEmpty()){
+        while (!$pq->isEmpty()) {
             $v = $pq->extractMin();
-            if($marked[$v]) continue;
+            if ($marked[$v]) continue;
             $marked[$v] = true;
 
             $edges = $graph->getEdgesFor($v);
 
-            foreach($edges as $edge){
+            foreach ($edges as $edge) {
                 $w = $edge->getTo();
                 $alt = $distance[$v] + $edge->getWeight();
-                if($alt < $distance[$w] ){
+                if ($alt < $distance[$w]) {
                     $distance[$w] = $alt;
                     $predecessors[$w] = $edge;
-                    if($pq->isElementInQueue($w)){
+                    if ($pq->isElementInQueue($w)) {
                         $pq->decreasePriority($w, $alt);
                     } else {
                         $pq->add($w, $alt);
@@ -59,7 +61,7 @@ class DijkstraShortestPath
                 }
             }
         }
-        return array( 'distance' => $distance, 'predecessors'=> $predecessors);
+        return array('distance' => $distance, 'predecessors' => $predecessors);
 
     }
 }

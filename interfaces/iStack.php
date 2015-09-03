@@ -1,6 +1,7 @@
 <?php
 
-interface iStack {
+interface iStack
+{
     public function size();
 
     public function push($input);

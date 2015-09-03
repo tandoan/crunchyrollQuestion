@@ -1,6 +1,7 @@
 <?php
 
-interface iEdge {
+interface iEdge
+{
     public function getFrom();
 
     public function getTo();

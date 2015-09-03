@@ -1,8 +1,7 @@
 <?php
 
-interface iWeightedDiGraph {
-
-
+interface iWeightedDiGraph
+{
     public function getNumVertices();
 
     public function getVertices();

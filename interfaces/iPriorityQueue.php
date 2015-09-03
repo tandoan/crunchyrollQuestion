@@ -1,10 +1,11 @@
 <?php
 
-interface iPriorityQueue{
+interface iPriorityQueue
+{
 
     public function isEmpty();
 
-    public function add($elem,$weight);
+    public function add($elem, $weight);
 
     public function decreasePriority($elem, $weight);
 
