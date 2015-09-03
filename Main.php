@@ -27,17 +27,25 @@ class Main
         return array_search(false, $array);
     }
 
+    // wrapper for Evaluator due to array_map ugliness
     function evalLink($input)
     {
         return Evaluator::evaluate($input);
     }
 
+    /**
+     * Assumes input is a list of expressions, one per line
+     * Parse and return list of links
+     * @param $pageText
+     * @return array
+     */
     function processLinksPage($pageText)
     {
         $unParsedLinks = explode("\n", $pageText);
         return array_map(array($this, 'evalLink'), $unParsedLinks);
     }
 
+    // No news in constructor.
     function init()
     {
         $this->tarjan = new Tarjan();
@@ -51,7 +59,7 @@ class Main
     }
 
     /**
-     * Accpets the initial expression, and crawls pages, building out a directed graph in the process
+     * Accpets the initial expression, evaluates, then crawls pages, building out a directed graph in the process
      * @param $initExpression
      */
     function crawl($initExpression)
@@ -65,8 +73,7 @@ class Main
 
             try {
                 $this->graph->addVertex($link);
-            } catch (InvalidArgumentException $e){
-            }
+            } catch (InvalidArgumentException $e){}
 
             $pageText = $this->http->getFrom($link);
             $this->linksFetched[$link] = true;
@@ -85,10 +92,9 @@ class Main
                         $this->linksFetched[$parsedLink] = false;
                         try{
                             $this->graph->addVertex($parsedLink);
-                        } catch(InvalidArgumentException $e) {
-                        }
-                        $this->graph->addEdge($link, $parsedLink);
+                        } catch(InvalidArgumentException $e) {}
 
+                        $this->graph->addEdge($link, $parsedLink);
                     }
                 }
             }
@@ -96,6 +102,11 @@ class Main
     }
 
 
+    /**
+     * Crawl, then do some analysis on graph structore
+     * @param $initInput
+     * @return string
+     */
     public function run($initInput)
     {
         $this->crawl($initInput);
@@ -110,7 +121,9 @@ class Main
     }
 }
 
+// Kick off the magic!
 
+// default the value of $expression if none is given on the command line
 $expression = 'abs(add(add(add(add(44181,188),32),142),add(subtract(41,25775),28)))';
 
 $options = getopt("e:");

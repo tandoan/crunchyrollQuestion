@@ -1,6 +1,12 @@
 <?php
 require_once('Stack.php');
 
+/**
+ * Class Evaluator
+ * Evaluate the expressions per spec.
+ * Prefix notation, 4 operators: add, multiply, subtract, abs
+ * No error handling due to guarantee of correctness
+ */
 class Evaluator {
 
     const OPEN_PAREN = '(';

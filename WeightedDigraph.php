@@ -1,7 +1,6 @@
 <?php
 
 require_once('Edge.php');
-require_once('PriorityQueue.php');
 require_once('iWeightedDiGraph.php');
 
 class WeightedDiGraph implements iWeightedDiGraph

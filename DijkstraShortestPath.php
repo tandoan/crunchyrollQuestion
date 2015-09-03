@@ -1,5 +1,6 @@
 <?php
 
+require_once('PriorityQueue.php');
 /**
  * Implementation of Dijkstra's Shortest Path algorithm using priority queues
  * Class DijkstraShortestPath

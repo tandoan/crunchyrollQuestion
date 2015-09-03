@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Class HTTP
+ * A curl wrapper, only does GET
+ */
 class HTTP
 {
 
