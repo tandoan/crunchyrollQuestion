@@ -51,7 +51,7 @@ class Main
     }
 
     /**
-     * Accpets the initial expression, and crawls pages
+     * Accpets the initial expression, and crawls pages, building out a directed graph in the process
      * @param $initExpression
      */
     function crawl($initExpression)
@@ -87,7 +87,7 @@ class Main
     }
 
 
-    public function run($initInput = 'abs(add(add(add(add(44181,188),32),142),add(subtract(41,25775),28)))')
+    public function run($initInput)
     {
         $this->crawl($initInput);
 
@@ -101,7 +101,16 @@ class Main
     }
 }
 
+
+$expression = 'abs(add(add(add(add(44181,188),32),142),add(subtract(41,25775),28)))';
+
+$options = getopt("e:");
+if($options['e']){
+    $expression = $options['e'];
+}
 $m = new Main();
 $m->init();
-$json = $m->run('abs(add(add(add(add(44181,188),32),142),add(subtract(41,25775),28)))');
+$json = $m->run($expression);
+echo "Answer is: ";
 echo $json;
+echo "\n";
