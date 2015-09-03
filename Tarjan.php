@@ -1,5 +1,5 @@
 <?php
-require_once('MyStack.php');
+require_once('Stack.php');
 
 /**
  * Class Tarjan
@@ -42,7 +42,7 @@ class Tarjan {
         $this->stronglyConnectedComponents = array();
         $this->digraph = $digraph;
         $this->index = 0;
-        $this->stack = new MyStack();
+        $this->stack = new Stack();
         $this->vertexIndexes = array();
         $this->vertexLowLink = array();
         $this->vertexOnStack = array();

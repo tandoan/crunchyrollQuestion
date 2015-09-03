@@ -1,7 +1,7 @@
 <?php
 
 require_once('iStack.php');
-class MyStack implements iStack{
+class Stack implements iStack{
 	private $data;
 
 	public function __construct(){

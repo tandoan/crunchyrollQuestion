@@ -1,5 +1,5 @@
 <?php
-require_once('MyStack.php');
+require_once('Stack.php');
 
 class Evaluator {
 
@@ -17,7 +17,7 @@ class Evaluator {
 
     /**
      * Attempt to do 1 level of evaluation
-     * @param MyStack $stack
+     * @param Stack $stack
      * @return mixed
      */
     private static function doEval($stack){
@@ -57,7 +57,7 @@ class Evaluator {
      * @return mixed
      */
     public static function evaluate($input){
-        $stack = new MyStack();
+        $stack = new Stack();
         $length = strlen($input);
         $i = 0;
         while($i < $length){

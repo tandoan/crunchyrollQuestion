@@ -51,7 +51,11 @@ class DijkstraShortestPath
                 if($alt < $distance[$w] ){
                     $distance[$w] = $alt;
                     $predecessors[$w] = $edge;
-                    $pq->add($w, $alt);
+                    if($pq->isElementInQueue($w)){
+                        $pq->decreasePriority($w, $alt);
+                    } else {
+                        $pq->add($w, $alt);
+                    }
                 }
             }
         }

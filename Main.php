@@ -9,6 +9,12 @@ require_once('Tarjan.php');
 require_once('DijkstraShortestPath.php');
 
 class Main {
+    private $tarjan;
+    private $dsp;
+    private $goalLink;
+    private $graph;
+    private $http;
+    private $linksFetched;
 
     /**
      * Intended for the $linksFetched array, which stores true for a key if it has been fetched, else false
@@ -28,59 +34,67 @@ class Main {
         return array_map(array($this, 'evalLink'), $unParsedLinks);
     }
 
-    public function run($initInput = 'abs(add(add(add(add(44181,188),32),142),add(subtract(41,25775),28)))'){
-        $tarjan = new Tarjan();
-        $dsp = new DijkstraShortestPath();
-        $goalLink = '';
+    function init(){
+        $this->tarjan = new Tarjan();
+        $this->dsp = new DijkstraShortestPath();
+        $this->goalLink = '';
+        $this->deadEnds = array();
+        $this->graph = new WeightedDiGraph();
+        $this->http = HTTPFactory::create();
+        $this->linksFetched = array();
+        $this->startingLink = '';
+    }
 
-        $deadEnds = array();
-        $graph = new WeightedDiGraph();
-        $http = HTTPFactory::create();
-        $linksFetched = array();
+    /**
+     * Accpets the initial expression, and crawls pages
+     * @param $initExpression
+     */
+    function crawl($initExpression){
+        $this->startingLink = $this->evalLink($initExpression);
+        $this->linksFetched[$this->startingLink] = false;
 
-
-        $startingLink = $this->evalLink($initInput);
-        $linksFetched[$startingLink] = false;
-
-
-        // Do some crawling, build a directed graph along the way
-        while($link = $this->linksToFetch($linksFetched)){
+        while($link = $this->linksToFetch($this->linksFetched)){
             //get a non-fetched link
             echo "Link to fetch is $link\n";
 
-            $graph->addVertex($link);
-            $pageText = $http->getFrom($link);
-            $linksFetched[$link] = true;
+            $this->graph->addVertex($link);
+            $pageText = $this->http->getFrom($link);
+            $this->linksFetched[$link] = true;
 
             echo "Fetched:\n$pageText\n";
             if($pageText === 'DEADEND'){
-                $deadEnds[$link] = true;
+                $this->deadEnds[$link] = true;
             } elseif($pageText === 'GOAL'){
-                $goalLink = $link;
+                $this->goalLink = $link;
             } else {
                 $parsedLinks = $this->processLinksPage($pageText);
                 foreach($parsedLinks as $parsedLink){
-                    if(!isset($linksFetched[$parsedLink])){
-                        $linksFetched[$parsedLink] = false;
-                        if(false !== $graph->addVertex($parsedLink) ) {
-                            $graph->addEdge($link, $parsedLink);
+                    if(!isset($this->linksFetched[$parsedLink])){
+                        $this->linksFetched[$parsedLink] = false;
+                        if(false !== $this->graph->addVertex($parsedLink) ) {
+                            $this->graph->addEdge($link, $parsedLink);
                         }
                     }
                 }
             }
         }
+    }
+
+
+    public function run($initInput = 'abs(add(add(add(add(44181,188),32),142),add(subtract(41,25775),28)))'){
+        $this->crawl($initInput);
 
         $answer = array();
-        $answer["goal"] = $goalLink;
-        $answer["node_count"] = $graph->getNumVertices();
-        $answer["shortest_path"] = $dsp->getShortestPath($graph, $startingLink, $goalLink);
-        $answer["directed_cycle_count"] = $tarjan->countCycles($graph);
+        $answer["goal"] = $this->goalLink;
+        $answer["node_count"] = $this->graph->getNumVertices();
+        $answer["shortest_path"] = $this->dsp->getShortestPath($this->graph, $this->startingLink, $this->goalLink);
+        $answer["directed_cycle_count"] = $this->tarjan->countCycles($this->graph);
 
-        $return = json_encode($answer);
-        echo $return;
-        return $return;
+        return json_encode($answer);
     }
 }
 
 $m = new Main();
-$m->run();
+$m->init();
+$json = $m->run('abs(add(add(add(add(44181,188),32),142),add(subtract(41,25775),28)))');
+echo $json;

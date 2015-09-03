@@ -11,26 +11,34 @@ class PriorityQueue implements iPriorityQueue{
     }
 
     public function isEmpty(){
-        if(0 === count($this->data)){
-            return true;
-        }
-        return false;
+        return (0 === count($this->data));
     }
 
     public function add($elem,$weight){
-
-        $this->data[$elem] = $weight;
+        if(!isset($this->data[$elem])) {
+            $this->data[$elem] = $weight;
+        } else {
+            throw new InvalidArgumentException('Element already exists in queue: ', $elem);
+        }
     }
 
     public function decreasePriority($elem, $weight){
-        $this->data[$elem] = $weight;
+        if(isset($this->data[$elem])){
+            $this->data[$elem] = $weight;
+        } else {
+            throw new InvalidArgumentException('Element is not in queue: ', $elem);
+        }
+    }
+
+    public function isElementInQueue($elem){
+        return isset($this->data[$elem]);
     }
 
     public function extractMin(){
         arsort($this->data);
         $keys = array_keys($this->data);
         $key = array_pop($keys);
-         array_pop($this->data);
+        array_pop($this->data);
 
         return $key;
 

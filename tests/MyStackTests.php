@@ -3,7 +3,7 @@ require_once('testSettings.php');
 
 require_once('MyStack.php');
 
-$myStack = new MyStack();
+$myStack = new Stack();
 assert(0 == $myStack->size());
 
 $myStack->push(1);
