@@ -45,7 +45,7 @@ class WeightedDiGraph implements iWeightedDiGraph
             $this->adjacency[$name] = array();
             return $this->adjacency[$name];
         } else {
-            return false;
+            throw new InvalidArgumentException('Vertex already exists: '.$name);
         }
     }
 }

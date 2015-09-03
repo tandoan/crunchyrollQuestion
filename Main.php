@@ -63,7 +63,11 @@ class Main
             //get a non-fetched link
             echo "Link to fetch is $link\n";
 
-            $this->graph->addVertex($link);
+            try {
+                $this->graph->addVertex($link);
+            } catch (InvalidArgumentException $e){
+            }
+
             $pageText = $this->http->getFrom($link);
             $this->linksFetched[$link] = true;
 
@@ -75,11 +79,16 @@ class Main
             } else {
                 $parsedLinks = $this->processLinksPage($pageText);
                 foreach ($parsedLinks as $parsedLink) {
+
+                    // link has been added by a prior source
                     if (!isset($this->linksFetched[$parsedLink])) {
                         $this->linksFetched[$parsedLink] = false;
-                        if (false !== $this->graph->addVertex($parsedLink)) {
-                            $this->graph->addEdge($link, $parsedLink);
+                        try{
+                            $this->graph->addVertex($parsedLink);
+                        } catch(InvalidArgumentException $e) {
                         }
+                        $this->graph->addEdge($link, $parsedLink);
+
                     }
                 }
             }
