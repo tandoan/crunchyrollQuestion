@@ -1,6 +1,8 @@
 <?php
-class MyStack {
-	public $data;
+
+require_once('iStack.php');
+class MyStack implements iStack{
+	private $data;
 
 	public function __construct(){
 		$this->data = array();

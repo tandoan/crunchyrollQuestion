@@ -1,10 +1,11 @@
 <?php
+require_once('iEdge.php');
 
-class Edge {
+class Edge implements iEdge{
 
-    public $from;
-    public $to;
-    public $weight;
+    private $from;
+    private $to;
+    private $weight;
 
     public function __construct($from, $to, $weight = 1){
         $this->from = $from;

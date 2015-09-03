@@ -40,4 +40,4 @@ algorithm tarjan is
       until (w = v)
       output the current strongly connected component
     end if
-  end functi
+  end function

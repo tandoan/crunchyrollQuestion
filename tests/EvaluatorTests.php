@@ -1,4 +1,5 @@
 <?php
+require_once('testSettings.php');
 require_once('Evaluator.php');
 
 
@@ -15,18 +16,7 @@ function testEval1() {
 	assert(18446744073709551616 == Evaluator::evaluate('abs(18446744073709551616'));
 	assert(18446744073709551616 == Evaluator::evaluate('multiply(18446744073709551616,1)'));
 
-//	assert (18837 == Evaluator::evaluate('abs(add(add(add(add(44181,188),32),142),add(subtract(41,25775),28)))'));
+	assert (18837 == Evaluator::evaluate('abs(add(add(add(add(44181,188),32),142),add(subtract(41,25775),28)))'));
 }
 
-// function givenTest(){
-
-// 	$input = 'abs(add(add(add(add(44181,188),32),142),add(subtract(41,25775),28)))';
-// 	$expected = '18837';
-// 	$actual = Evaluator::evaluate($input);
-// 	if($expected != $actual){
-// 		throw new Exception('sad panda');
-// 	}
-// }
-
-//givenTest();
 testEval1();

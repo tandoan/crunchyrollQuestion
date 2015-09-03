@@ -1,6 +1,6 @@
 <?php
 
-class Crawler {
+class HTTP {
 
     private $curl;
     private $baseURL;
@@ -12,16 +12,15 @@ class Crawler {
 
     public function __destruct(){
         curl_close($this->curl);
-
     }
 
-    public function fetch($url){
+    public function get($url){
         curl_setopt($this->curl, CURLOPT_URL, $url);
         $result = curl_exec($this->curl);
         return $result;
     }
 
-    public function fetchFrom($integer){
-        return $this->fetch($this->baseURL . $integer);
+    public function getFrom($integer){
+        return $this->get($this->baseURL . $integer);
     }
 }

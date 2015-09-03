@@ -1,6 +1,10 @@
 <?php
 require_once('MyStack.php');
 
+/**
+ * Class Tarjan
+ * implemented from https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm
+ */
 class Tarjan {
 
     public $index;
@@ -44,7 +48,7 @@ class Tarjan {
         $this->vertexOnStack = array();
 
         $vertices = $digraph->getVertices();
-        foreach($vertices as $vertex => $edges) {
+        foreach($vertices as $vertex) {
             if (!$this->vertexIndexes[$vertex]) {
                 $this->strongConnect($vertex);
             }

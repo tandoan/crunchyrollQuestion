@@ -1,6 +1,7 @@
 <?php
+require_once('testSettings.php');
+
 require_once('WeightedDigraph.php');
-require_once('Tarjan.php');
 //
 //$g = new WeightedDiGraph();
 //$g->addVertex('1');

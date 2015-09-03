@@ -1,8 +1,10 @@
 <?php
 
-class PriorityQueue{
+require_once('iPriorityQueue.php');
 
-    public $data;
+class PriorityQueue implements iPriorityQueue{
+
+    private $data;
 
     public function __construct(){
         $this->data = array();
@@ -16,9 +18,7 @@ class PriorityQueue{
     }
 
     public function add($elem,$weight){
-//        if(isset($this->data[$elem])){
-//
-//        }
+
         $this->data[$elem] = $weight;
     }
 
@@ -36,23 +36,3 @@ class PriorityQueue{
 
     }
 }
-//
-//$pq = new PriorityQueue();
-//$pq->add('1', 0);
-//$pq->add('4', 4);
-//$pq->add('3', 2);
-//$pq->add('5', 1);
-//
-//print_r($pq->data);
-//$v = $pq->extractMin();
-//print_r($v);
-//print_r($pq->data);
-//
-//assert('1' == $v);
-//
-//$pq->extractMin();
-//print_r($pq->data);
-//
-//
-//$pq->extractMin();
-//print_r($pq->data);

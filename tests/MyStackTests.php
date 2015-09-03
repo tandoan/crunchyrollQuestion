@@ -1,4 +1,5 @@
 <?php
+require_once('testSettings.php');
 
 require_once('MyStack.php');
 
